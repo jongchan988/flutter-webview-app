@@ -23,7 +23,8 @@ class _ImageWidgetApp extends State<ImageWidgetApp>{
             children: <Widget>[
               Image.asset('image/logo.png', width: 200, height: 100, fit: BoxFit.contain,),
               // Image.asset('image/logo.png', width: 200, height: 100, fit: BoxFit.fill,)
-              Text('Hello Flutter',
+              const Text(
+                'Hello Flutter',
                 style: TextStyle(
                   fontFamily: 'Pacifico',
                   fontSize: 30,
