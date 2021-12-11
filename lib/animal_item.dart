@@ -4,12 +4,12 @@ class Animal{
   String? imagePath;
   String? animalName;
   String? kind;
-  bool? fliExist = false;
+  bool? flyExist = false;
 
   Animal({
    required this.animalName,
     required this.kind,
     required this.imagePath,
-    this.fliExist
+    this.flyExist
   });
 }
