@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     ));
     animalList.add(Animal(
         animalName: '고양이',
-        kind: '류',
+        kind: '포유류',
         imagePath: 'repo/images/cat.png'
     ));
     animalList.add(Animal(
