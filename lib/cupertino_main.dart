@@ -1,3 +1,4 @@
+import 'package:dailyfish_app/iosSub/cupertino_second_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'animal_item.dart';
 import 'iosSub/cupertino_first_page.dart';
@@ -40,11 +41,15 @@ class _CupertinoMain extends State<CupertinoMain> {
         animalName: "늑대", kind: "포유류", imagePath: "repo/images/wolf.png"));
   }
 
-  StatelessWidget getTabBuilderContainer(BuildContext context, int value) {
+  Widget getTabBuilderContainer(BuildContext context, int value) {
     int tabNo = value + 1;
     switch (value){
       case 0 :
         return CupertinoFirstPage(
+          animalList: animalList,
+        );
+      case 1 :
+        return CupertinoSecondPage(
           animalList: animalList,
         );
     }
