@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../animal_item.dart';
-class SecondApp extends StatefulWidget{
 
+class SecondApp extends StatefulWidget {
   final List<Animal>? list;
 
   @override
   State<StatefulWidget> createState() => _SecondApp();
+
   SecondApp({Key? key, this.list}) : super(key: key);
 
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: Center(
@@ -121,19 +121,24 @@ class _SecondApp extends State<SecondApp> {
                         style: TextStyle(fontSize: 30.0),
                       ),
                       actions: [
-                        ElevatedButton(onPressed: (){
-                          widget.list?.add(animal);
-                          Navigator.of(context).pop();
-                        } , child: Text('예'),),
-                        ElevatedButton(onPressed: (){
-                          Navigator.of(context).pop();
-                        } , child: Text('아니요'),),
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.list?.add(animal);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('예'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('아니요'),
+                        ),
                       ],
                     );
                     showDialog(
                         context: context,
                         builder: (BuildContext context) => dialog);
-
                   })
             ],
           ),
@@ -158,5 +163,4 @@ class _SecondApp extends State<SecondApp> {
         return "포유류";
     }
   }
-
 }

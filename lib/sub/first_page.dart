@@ -13,22 +13,31 @@ class FirstApp extends StatelessWidget {
           child: ListView.builder(
               itemBuilder: (context, position) {
                 return GestureDetector(
-                  child:  Card(
+                  child: Card(
                     child: Row(
                       children: <Widget>[
-                        Image.asset(list[position].imagePath! , height: 100, width: 100, fit: BoxFit.contain,),
+                        Image.asset(
+                          list[position].imagePath!,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.contain,
+                        ),
                         Text(list[position].animalName!),
                       ],
                     ),
                   ),
-                  onTap: (){
+                  onTap: () {
                     AlertDialog dialog = AlertDialog(
-                      content: Text('이 동물은 ${list[position].kind} 입니다' , style: TextStyle(fontSize: 30.0),),
+                      content: Text(
+                        '이 동물은 ${list[position].kind} 입니다',
+                        style: TextStyle(fontSize: 30.0),
+                      ),
                     );
                     showDialog(
-                        context: context, builder: (BuildContext context) => dialog);
+                        context: context,
+                        builder: (BuildContext context) => dialog);
                   },
-                  onLongPress: (){
+                  onLongPress: () {
                     list.removeAt(position);
                   },
                 );
