@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-
+import '../animal_item.dart';
 class SecondApp extends StatelessWidget{
+
+  final List<Animal>? list;
+
+  SecondApp({Key? key, this.list}) : super(key: key);
+
+
   @override
   Widget build(BuildContext context){
     return Scaffold(

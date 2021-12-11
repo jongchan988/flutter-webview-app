@@ -58,6 +58,14 @@ flutter:
   uses-material-design: true
   assets:
     - image/logo.png
+    - repo/images/bee.png
+    - repo/images/cat.png
+    - repo/images/cow.png
+    - repo/images/dog.png
+    - repo/images/fox.png
+    - repo/images/monkey.png
+    - repo/images/pig.png
+    - repo/images/wolf.png
   fonts:
     - family: Pacifico
       fonts:
