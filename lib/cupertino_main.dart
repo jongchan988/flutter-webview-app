@@ -2,6 +2,7 @@ import 'package:dailyfish_app/iosSub/cupertino_second_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'animal_item.dart';
 import 'iosSub/cupertino_first_page.dart';
+import 'cupertino_design_page.dart';
 
 class CupertinoMain extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _CupertinoMain extends State<CupertinoMain> {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.home)),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.add)),
+        BottomNavigationBarItem(icon: Icon(CupertinoIcons.add))
       ],
     );
     animalList.add(
@@ -51,6 +53,10 @@ class _CupertinoMain extends State<CupertinoMain> {
       case 1 :
         return CupertinoSecondPage(
           animalList: animalList,
+        );
+      case 2 :
+        return CupertinoDesignPage(
+
         );
     }
     return Container(
