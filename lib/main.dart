@@ -21,6 +21,14 @@ class HttpApp extends StatefulWidget{
 
 class _HttpApp extends State<HttpApp> {
   String result = '';
+  List? data;
+
+  @override
+  void initState(){
+    super.initState();
+    data = new List.empty(growable: true);
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -29,7 +37,35 @@ class _HttpApp extends State<HttpApp> {
       ),
       body: Container(
         child: Center(
-          child: Text('$result'),
+          child: data!.length == 0 ?
+          Text(
+            '데이터가없습니다.',
+            style: TextStyle(fontSize: 20),
+            textAlign: TextAlign.center,
+          ):
+          ListView.builder(
+            itemBuilder: (context, index){
+              return Card(
+                child: Container(
+                  child: Column(
+                    children : <Widget>[
+                      Text(data![index]['title'].toString()),
+                      Text(data![index]['authors'].toString()),
+                      Text(data![index]['sale_price'].toString()),
+                      Text(data![index]['status'].toString()),
+                      Image.network(
+                        data![index]['thumbnail'],
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.contain,
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+            itemCount: data!.length,
+          )
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -49,7 +85,13 @@ class _HttpApp extends State<HttpApp> {
         "Authorization":"KakaoAK $kakaoApiKey"
       }
     );
-    print(response.body);
-    return "Sucessfull";
+    setState(() {
+      var dataConvertedToJSON = json.decode(response.body);
+      List documentsList = dataConvertedToJSON['documents'];
+      data!.addAll(documentsList);
+    });
+    return response.body;
   }
+
+
 }
