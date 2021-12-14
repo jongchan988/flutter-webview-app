@@ -22,18 +22,41 @@ class HttpApp extends StatefulWidget{
 class _HttpApp extends State<HttpApp> {
   String result = '';
   List? data;
+  TextEditingController? _editingController;
+  ScrollController? _scrollController;
+  int page = 1;
 
   @override
   void initState(){
     super.initState();
     data = new List.empty(growable: true);
+    _editingController = new TextEditingController();
+    _scrollController = new ScrollController();
+
+    _scrollController!.addListener(() {
+      if(needData()){
+        page++;
+        getJsonData();
+      }
+    });
   }
+
+  bool needData() => _scrollController!.offset >= _scrollController!.position.maxScrollExtent && !_scrollController!.position.outOfRange;
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Http Example'),
+        title: TextField(
+          controller: _editingController,
+          style: TextStyle(
+            color: Colors.white
+          ),
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            hintText: '검색어를 입력하세요'
+          ),
+        ),
       ),
       body: Container(
         child: Center(
@@ -76,19 +99,22 @@ class _HttpApp extends State<HttpApp> {
               );
             },
             itemCount: data!.length,
+            controller: _scrollController,
           )
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.file_download),
         onPressed: () {
+          page = 1;
+          data!.clear();
           getJsonData();
         },
       ),
     );
   }
   Future<String> getJsonData() async{
-    var url = 'https://dapi.kakao.com/v3/search/book?target=title&query=doit';
+    var url = 'https://dapi.kakao.com/v3/search/book?target=title&page=$page&query=${_editingController!.value.text}';
     var kakaoApiKey = AuthKey.kakaoApiKey;
     var response = await http.get(
       Uri.parse(url),
