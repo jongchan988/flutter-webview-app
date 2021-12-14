@@ -87,9 +87,9 @@ class _HttpApp extends State<HttpApp> {
                               textAlign: TextAlign.center,
                             ),
                           ),
-                          Text('저자 : ${data![index]['title'].toString()}'),
-                          Text('가격 : ${data![index]['title'].toString()}'),
-                          Text('판매중 : ${data![index]['title'].toString()}'),
+                          Text('저자 : ${data![index]['authors'].toString()}'),
+                          Text('가격 : ${data![index]['sale_price'].toString()}'),
+                          Text('판매중 : ${data![index]['status'].toString()}'),
                         ],
                       )
                     ],
