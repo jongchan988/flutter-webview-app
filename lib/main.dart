@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sub_detail.dart';
 import 'second_detail.dart';
-import 'third_page.dart';
+import 'third_detail.dart';
 
 void main(){
   runApp(MyApp());

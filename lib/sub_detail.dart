@@ -45,9 +45,18 @@ class _SubDetail extends State<StatefulWidget> {
         itemCount: todoList.length,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          _addNavigation(context);
+        },
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void _addNavigation(BuildContext context) async {
+    final result = await Navigator.of(context).pushNamed('/second');
+    setState(() {
+      todoList.add(result as String);
+    });
   }
 }
