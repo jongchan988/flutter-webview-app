@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'sub_detail.dart';
+import 'second_detail.dart';
+import 'third_page.dart';
 
 void main(){
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static const String _title = 'Widget Example';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SubPage Example',
+      title: _title,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: {
-       '/': (context) => FirstPage(),
-       '/second': (context) => SecondPage()
+        '/': (context) => SubDetail(),
+        '/second': (context) => SecondDetail(),
+        '/third': (context) => ThirdDetail(),
       },
 
     );
