@@ -30,6 +30,19 @@ class _DatabaseApp extends State<DatabaseApp>{
     });
   }
 
+  void _updateTodo(Todo todo) async{
+    final Database database = await widget.db;
+    await database.update(
+      'todos',
+      todo.toMap(),
+      where: 'id = ?',
+      whereArgs: [todo.id],
+    );
+    setState(() {
+      todoList = getTodos();
+    });
+  }
+
   Future<List<Todo>> getTodos() async {
     final Database database = await widget.db;
     final List<Map<String, dynamic>> maps = await database.query('todos');
@@ -69,14 +82,63 @@ class _DatabaseApp extends State<DatabaseApp>{
                     return ListView.builder(
                       itemBuilder: (context, index){
                         Todo todo = (snapshot.data as List<Todo>)[index];
-                        return Card(
-                          child: Column(
-                            children: <Widget>[
-                              Text(todo.title!),
-                              Text(todo.content!),
-                              Text('${todo.active == 1 ? 'true' : 'false'}'),
-                            ],
+                        return ListTile(
+                          title: Text(
+                            todo.title!,
+                            style: TextStyle(fontSize: 20),
                           ),
+                          subtitle: Container(
+                            child: Column(
+                              children: <Widget>[
+                                Text(todo.content!),
+                                Text('${todo.active == 1 ? 'true' : 'false'}'),
+                                Container(
+                                  height: 1,
+                                  color: Colors.blue,
+                                )
+                              ],
+                            ),
+                          ),
+                          onTap: () async {
+                            TextEditingController controller = new TextEditingController(text: todo.content);
+                            Todo result = await showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return AlertDialog(
+                                  title: Text('${todo.id} : ${todo.title}'),
+                                  content: TextField(
+                                    controller: controller,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: (){
+                                        todo.active == 1 ? todo.active = 0 : todo.active = 1;
+                                        todo.content = controller.value.text;
+                                        Navigator.of(context).pop(todo);
+                                      },
+                                      child: Text('예(체크변경 o)'),
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        todo.active == 1 ? todo.active = 0 : todo.active = 1;
+                                        todo.content = controller.value.text;
+                                        Navigator.of(context).pop(todo);
+                                      },
+                                      child: Text('예(체크변경 x)'),
+                                    ),
+                                    TextButton(
+                                      onPressed: (){
+                                        Navigator.of(context).pop(todo);
+                                      },
+                                      child: Text('아니요'),
+                                    )
+                                  ],
+                                );
+                              }
+                            );
+                            _updateTodo(result);
+                          },
                         );
                       },
                       itemCount: (snapshot.data as List<Todo>).length,
