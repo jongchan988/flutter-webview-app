@@ -44,6 +44,13 @@ class _FileApp extends State<FileApp> {
     return itemList;
   }
 
+  void writeFruit(String fruit) async{
+    var dir = await getApplicationDocumentsDirectory();
+    var file = await File(dir.path + '/fruit.txt').readAsString();
+    file = file + '\n' + fruit;
+    File(dir.path + '/fruit.txt').writeAsStringSync(file);
+  }
+
   bool notExistData(bool? firstCheck, bool fileExist) => firstCheck == null || firstCheck == false || fileExist == false;
   @override
   void initState(){
@@ -90,6 +97,10 @@ class _FileApp extends State<FileApp> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
+          writeFruit(controller.value.text);
+          setState(() {
+            itemList.add(controller.value.text);
+          });
         },
         child: Icon(Icons.add),
       ),
