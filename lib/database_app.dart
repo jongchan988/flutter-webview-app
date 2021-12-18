@@ -43,6 +43,18 @@ class _DatabaseApp extends State<DatabaseApp>{
     });
   }
 
+  void _deleteTodo(Todo todo) async{
+    final Database database = await widget.db;
+    database.delete(
+      'todos',
+      where: 'id = ?',
+      whereArgs: [todo.id]
+    );
+    setState(() {
+      todoList = getTodos();
+    });
+  }
+
   Future<List<Todo>> getTodos() async {
     final Database database = await widget.db;
     final List<Map<String, dynamic>> maps = await database.query('todos');
@@ -99,6 +111,33 @@ class _DatabaseApp extends State<DatabaseApp>{
                               ],
                             ),
                           ),
+                          onLongPress: () async {
+                            Todo result = await showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return AlertDialog(
+                                  title: Text('${todo.id} : ${todo.title}'),
+                                  content: Text('${todo.content}를 삭제하시겠습니까?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: (){
+                                        Navigator.of(context).pop(todo);
+                                      },
+                                      child: Text('예'),
+                                    )
+                                    ,
+                                    TextButton(
+                                      onPressed: (){
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('아니요'),
+                                    )
+                                  ],
+                                );
+                              }
+                            );
+                            _deleteTodo(result);
+                          },
                           onTap: () async {
                             TextEditingController controller = new TextEditingController(text: todo.content);
                             Todo result = await showDialog(
