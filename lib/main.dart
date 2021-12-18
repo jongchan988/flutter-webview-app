@@ -3,6 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'file_app.dart';
 import 'large_file_main.dart';
 import 'intro_page.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'database_app.dart';
+import 'add_todo.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,12 +15,30 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<Database> database = initDatabase();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: IntroPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => DatabaseApp(database),
+        '/add': (context) => AddTodoApp(database),
+      },
+    );
+  }
+
+  Future<Database> initDatabase() async{
+    return openDatabase(
+      join(await getDatabasesPath(), 'todo_databse.db'),
+      onCreate: (db, version){
+        return db.execute(
+          "CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, active INTEGER)",
+        );
+      },
+      version: 1,
     );
   }
 }
