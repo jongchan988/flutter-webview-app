@@ -11,6 +11,13 @@ class DatabaseApp extends StatefulWidget{
 }
 
 class _DatabaseApp extends State<DatabaseApp>{
+  Future<List<Todo>>? todoList;
+
+  @override
+  void initState(){
+    super.initState();
+    todoList = getTodos();
+  }
   void _insertTodo(Todo todo) async{
     final Database database = await widget.db;
     await database.insert(
@@ -18,6 +25,24 @@ class _DatabaseApp extends State<DatabaseApp>{
       todo.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace
     );
+    setState(() {
+      todoList = getTodos();
+    });
+  }
+
+  Future<List<Todo>> getTodos() async {
+    final Database database = await widget.db;
+    final List<Map<String, dynamic>> maps = await database.query('todos');
+
+    return List.generate(maps.length, (i){
+      int active = maps[i]['active'] == 1 ? 1 : 0;
+      return Todo(
+        title: maps[i]['title'].toString(),
+        content: maps[i]['content'].toString(),
+        active: active,
+        id: maps[i]['id']
+      );
+    });
   }
 
   @override
@@ -28,7 +53,44 @@ class _DatabaseApp extends State<DatabaseApp>{
           'Database Example'
         ),
       ),
-      body: Container(),
+      body: Container(
+        child: Center(
+          child: FutureBuilder(
+            builder: (context, snapshot){
+              switch(snapshot.connectionState){
+                case ConnectionState.none:
+                  return CircularProgressIndicator();
+                case ConnectionState.waiting:
+                  return CircularProgressIndicator();
+                case ConnectionState.active:
+                  return CircularProgressIndicator();
+                case ConnectionState.done:
+                  if(snapshot.hasData){
+                    return ListView.builder(
+                      itemBuilder: (context, index){
+                        Todo todo = (snapshot.data as List<Todo>)[index];
+                        return Card(
+                          child: Column(
+                            children: <Widget>[
+                              Text(todo.title!),
+                              Text(todo.content!),
+                              Text('${todo.active == 1 ? 'true' : 'false'}'),
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: (snapshot.data as List<Todo>).length,
+                    );
+                  }else{
+                    return Text('No Data');
+                  }
+              }
+              return CircularProgressIndicator();
+            },
+            future: todoList,
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
           final todo = await Navigator.of(context).pushNamed('/add');
