@@ -1,79 +1,92 @@
 import 'package:flutter/material.dart';
-import 'sub_detail.dart';
-import 'second_detail.dart';
-import 'third_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static const String _title = 'Widget Example';
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: _title,
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => SubDetail(),
-        '/second': (context) => SecondDetail(),
-        '/third': (context) => ThirdDetail(),
-      },
-
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class FirstPage extends StatefulWidget {
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
   @override
-  State<StatefulWidget> createState() => _FirstPage();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _FirstPage extends State<FirstPage>{
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sub Page Main'),
-      ),
-      body: Container(
-        child: Center(
-          child: Text('첫 번째 페이지'),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.of(context).pushNamed('/second');
-        },
-        child: Icon(
-          Icons.add
-        ),
-      ),
-    );
+  void initState(){
+    super.initState();
+    _loadData();
   }
-}
+  void _setData(int value) async{
+    var key = 'count';
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setInt(key, value);
+  }
 
-class SecondPage extends StatelessWidget{
+  void _loadData() async{
+    var key = 'count';
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      var value = pref.getInt(key);
+      if (value == null){
+        _counter = 0;
+      } else {
+        _counter = value;
+      }
+    });
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+      _setData(_counter);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Page'),
+        title: Text(widget.title),
       ),
-      body: Container(
-        child: Center(
-          child: ElevatedButton(
-            onPressed: (){
-              Navigator.of(context).pop();
-            },
-            child: Text('돌아가기'),
-          ),
+      body: Center(
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
