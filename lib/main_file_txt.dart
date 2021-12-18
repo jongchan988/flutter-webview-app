@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'file_app.dart';
-import 'large_file_main.dart';
-import 'intro_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: IntroPage(),
+      home: FileApp(),
     );
   }
 }
@@ -68,19 +66,28 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('로고바꾸기'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LargeFileMain()));
-            },
-            child: Text(
-              '로고 바꾸기',
-              style: TextStyle(color: Colors.white),
-            )
-          )
-        ],
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
