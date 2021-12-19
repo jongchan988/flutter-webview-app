@@ -70,6 +70,14 @@ class _DatabaseApp extends State<DatabaseApp>{
     });
   }
 
+  void _allUpdate() async{
+    final Database database = await widget.db;
+    await database.rawUpdate('update todos set active = 1 where active = 0');
+    setState(() {
+      todoList = getTodos();
+    });
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -206,18 +214,34 @@ class _DatabaseApp extends State<DatabaseApp>{
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          final todo = await Navigator.of(context).pushNamed('/add');
-          if(todo != null){
-            _insertTodo(todo as Todo);
-          }
-        },
-        child: Icon(
-          Icons.add
-        ),
+      floatingActionButton: Column(
+        children: <Widget>[
+          FloatingActionButton(
+            onPressed: () async{
+              final todo = await Navigator.of(context).pushNamed('/add');
+              if(todo != null){
+                _insertTodo(todo as Todo);
+              }
+            },
+            heroTag: null,
+            child: Icon(
+              Icons.add
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
+            onPressed: () async{
+              _allUpdate();
+            },
+            heroTag: null,
+            child: Icon(Icons.update),
+          )
+        ],
+        mainAxisAlignment: MainAxisAlignment.end,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
     );
   }
 }
