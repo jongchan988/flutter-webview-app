@@ -1,109 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'file_app.dart';
-import 'large_file_main.dart';
-import 'intro_page.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'database_app.dart';
-import 'add_todo.dart';
-import 'clear_list_app.dart';
-void main() {
-  runApp(MyApp());
-}
+import 'entity/people.dart';
 
-class MyApp extends StatelessWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget{
   @override
-  Widget build(BuildContext context) {
-    Future<Database> database = initDatabase();
+  Widget build(BuildContext context){
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primarySwatch: Colors.blue
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => DatabaseApp(database),
-        '/add': (context) => AddTodoApp(database),
-        '/clear': (context) => ClearListApp(database)
-      },
-    );
-  }
-
-  Future<Database> initDatabase() async{
-    return openDatabase(
-      join(await getDatabasesPath(), 'todo_databse.db'),
-      onCreate: (db, version){
-        return db.execute(
-          "CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, active INTEGER)",
-        );
-      },
-      version: 1,
+      home: AnimationApp(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
+class AnimationApp extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<StatefulWidget> createState() => _AnimationApp();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
+class _AnimationApp extends State<AnimationApp>{
+  List<People> peoples = new List.empty(growable: true);
+  int current = 0;
   @override
   void initState(){
+    peoples.add(People('스미스', 180, 92));
+    peoples.add(People('스미1', 140, 42));
+    peoples.add(People('스미2', 170, 52));
+    peoples.add(People('스미3', 210, 62));
+    peoples.add(People('스미4', 184, 72));
+    peoples.add(People('스미5', 111, 82));
     super.initState();
-    _loadData();
   }
-  void _setData(int value) async{
-    var key = 'count';
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setInt(key, value);
-  }
-
-  void _loadData() async{
-    var key = 'count';
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    setState(() {
-      var value = pref.getInt(key);
-      if (value == null){
-        _counter = 0;
-      } else {
-        _counter = value;
-      }
-    });
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      _setData(_counter);
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('로고바꾸기'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LargeFileMain()));
-            },
-            child: Text(
-              '로고 바꾸기',
-              style: TextStyle(color: Colors.white),
-            )
-          )
-        ],
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+        title: Text('Animation Example'),
+      ),
+      body: Container(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 100,
+                      child: Text('이름: ${peoples[current].name}'),
+
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(seconds: 2),
+                      curve: Curves.bounceIn,
+                      color: Colors.amber,
+                      child: Text(
+                        '키 ${peoples[current].height}',
+                        textAlign: TextAlign.center,
+                      ),
+                      width: 50,
+                      height: peoples[current].height,
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(seconds: 2),
+                      curve: Curves.easeInCubic,
+                      color: Colors.blue,
+                      child: Text(
+                        '몸무게 ${peoples[current].weight}',
+                        textAlign: TextAlign.center,
+                      ),
+                      width: 50,
+                      height: peoples[current].weight,
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(seconds: 2),
+                      curve: Curves.linear,
+                      color: Colors.pinkAccent,
+                      child: Text(
+                        'bmi ${peoples[current].bmi.toString().substring(0,2)}',
+                        textAlign: TextAlign.center,
+                      ),
+                      width: 50,
+                      height: peoples[current].bmi,
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                ),
+                height:200,
+              ),
+
+              ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    if(current < peoples.length -1){
+                      current++;
+                    }
+                  });
+                },
+                child: Text('다음'),
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                    if(current > 0){
+                      current--;
+                    }
+                  });
+                },
+                child: Text('이전'),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
+      ),
     );
   }
 }

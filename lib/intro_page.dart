@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'main.dart';
+import 'main_database.dart';
 
 class IntroPage extends StatefulWidget{
   @override
