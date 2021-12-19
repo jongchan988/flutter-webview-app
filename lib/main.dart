@@ -23,11 +23,25 @@ class AnimationApp extends StatefulWidget {
 
 class _AnimationApp extends State<AnimationApp>{
   List<People> peoples = new List.empty(growable: true);
+  Color weightColor = Colors.blue;
   int current = 0;
+
+  void _changeWeightColor(double weight){
+    if(weight < 40){
+      weightColor = Colors.blueAccent;
+    } else if(weight < 60){
+      weightColor = Colors.indigo;
+    } else if(weight < 80){
+      weightColor = Colors.orange;
+    } else {
+      weightColor = Colors.red;
+    }
+  }
+
   @override
   void initState(){
-    peoples.add(People('스미스', 180, 92));
-    peoples.add(People('스미1', 140, 42));
+    peoples.add(People('스미스', 172, 73));
+    peoples.add(People('스미1', 170, 57));
     peoples.add(People('스미2', 170, 52));
     peoples.add(People('스미3', 210, 62));
     peoples.add(People('스미4', 184, 72));
@@ -66,7 +80,7 @@ class _AnimationApp extends State<AnimationApp>{
                     AnimatedContainer(
                       duration: Duration(seconds: 2),
                       curve: Curves.easeInCubic,
-                      color: Colors.blue,
+                      color: weightColor,
                       child: Text(
                         '몸무게 ${peoples[current].weight}',
                         textAlign: TextAlign.center,
@@ -98,6 +112,7 @@ class _AnimationApp extends State<AnimationApp>{
                     if(current < peoples.length -1){
                       current++;
                     }
+                    _changeWeightColor(peoples[current].weight);
                   });
                 },
                 child: Text('다음'),
@@ -108,6 +123,7 @@ class _AnimationApp extends State<AnimationApp>{
                     if(current > 0){
                       current--;
                     }
+                    _changeWeightColor(peoples[current].weight);
                   });
                 },
                 child: Text('이전'),
