@@ -1,3 +1,4 @@
+import 'package:dailyfish_app/intro.dart';
 import 'package:flutter/material.dart';
 import 'entity/people.dart';
 import 'second_page.dart';
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.blue
       ),
-      home: AnimationApp(),
+      home: IntroPage(),
     );
   }
 }

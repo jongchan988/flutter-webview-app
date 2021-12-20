@@ -73,6 +73,9 @@ flutter:
     - repo/images/pig.png
     - repo/images/wolf.png
     - repo/fruit.txt
+    - repo/images/circle.png
+    - repo/images/saturn.png
+    - repo/images/sunny.png
   fonts:
     - family: Pacifico
       fonts:
