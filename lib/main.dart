@@ -2,6 +2,7 @@ import 'package:dailyfish_app/intro.dart';
 import 'package:flutter/material.dart';
 import 'entity/people.dart';
 import 'second_page.dart';
+import 'sliver_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -163,6 +164,12 @@ class _AnimationApp extends State<AnimationApp>{
                   ),
                 ),
               ),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SliverPage()));
+                },
+                child: Text('페이지 이동'),
+              )
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
