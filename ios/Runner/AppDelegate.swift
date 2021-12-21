@@ -11,6 +11,7 @@ import Flutter
 
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let nativeChannel = FlutterMethodChannel(name: "com.flutter.dev/calc" , binaryMessenger: controller.binaryMessenger)
+    let encryptoChannel = FlutterMethodChannel(name: "com.flutter.dev/encrypto" , binaryMessenger: controller.binaryMessenger)
 
           nativeChannel.setMethodCallHandler({
               (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
@@ -29,6 +30,25 @@ import Flutter
               })
           })
 
+          encryptoChannel.setMethodCallHandler({
+                        (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
+                        encryptoChannel.setMethodCallHandler({
+                            [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
+
+                            guard call.method == "getEncrypto" else {
+                                result(FlutterMethodNotImplemented)
+                                return
+                            }
+
+                            if(call.method == "getEncrypto"){
+                                var returnString : String = call.arguments as! String
+                                returnString = returnString.data(using: .utf8)!.base64EncodedString()
+
+                                self?.sendEncrypto(result: result , calcResult: returnString)
+                            }
+                        })
+                    })
+
 
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -37,6 +57,10 @@ import Flutter
 
     private func sendNativeCalc(result: FlutterResult , calcResult : Int) {
        result(calcResult)
+    }
+
+    private func sendEncrypto(result: FlutterResult , calcResult : String) {
+           result(calcResult)
     }
 
 }
