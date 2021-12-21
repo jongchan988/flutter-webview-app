@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'satrun_loading.dart';
 import 'dart:async';
-import 'main.dart';
+import 'main_animation.dart';
 
 class IntroPage extends StatefulWidget{
   @override
