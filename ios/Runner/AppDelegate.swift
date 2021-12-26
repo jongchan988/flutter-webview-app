@@ -12,6 +12,7 @@ import Flutter
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let nativeChannel = FlutterMethodChannel(name: "com.flutter.dev/calc" , binaryMessenger: controller.binaryMessenger)
     let encryptoChannel = FlutterMethodChannel(name: "com.flutter.dev/encrypto" , binaryMessenger: controller.binaryMessenger)
+    let dialogChannel = FlutterMethodChannel(name: "com.flutter.dev/dialog" , binaryMessenger: controller.binaryMessenger)
 
           nativeChannel.setMethodCallHandler({
               (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
@@ -58,6 +59,14 @@ import Flutter
                         })
                     })
 
+          dialogChannel.setMethodCallHandler({
+                      (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
+                      dialogChannel.setMethodCallHandler({
+                          [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
+                          //TODO: IOS 다이얼로그 구햔
+                      })
+                    })
+
 
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -71,5 +80,7 @@ import Flutter
     private func sendEncrypto(result: FlutterResult , calcResult : String) {
            result(calcResult)
     }
+
+
 
 }
