@@ -35,16 +35,25 @@ import Flutter
                         encryptoChannel.setMethodCallHandler({
                             [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
 
-                            guard call.method == "getEncrypto" else {
+                            guard call.method == "getEncrypto" || call.method == "getDecode"  else {
                                 result(FlutterMethodNotImplemented)
                                 return
                             }
 
                             if(call.method == "getEncrypto"){
-                                var returnString : String = call.arguments as! String
-                                returnString = returnString.data(using: .utf8)!.base64EncodedString()
+                                let callString : String = call.arguments as! String
+                                let returnString = callString.data(using: .utf8)!.base64EncodedString()
 
                                 self?.sendEncrypto(result: result , calcResult: returnString)
+                            }
+
+                            if(call.method == "getDecode"){
+                                let callString : String = call.arguments as! String
+                                let decodedData = Data(base64Encoded: callString)!
+
+                                let base64DecString = String(data: decodedData, encoding: .utf8)!
+
+                                self?.sendEncrypto(result: result , calcResult: base64DecString)
                             }
                         })
                     })
