@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "954719877362",
+    "project_id": "flutter-study-8bad5",
+    "storage_bucket": "flutter-study-8bad5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954719877362:android:c5d20742890203b836386b",
+        "android_client_info": {
+          "package_name": "com.example.dailyfish_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954719877362-n3e9mi527nepj8ap2qhta3hk22cdaf4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApcoK4tNF996XAH7D8b8JxKGl_BpSmf4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954719877362-n3e9mi527nepj8ap2qhta3hk22cdaf4n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

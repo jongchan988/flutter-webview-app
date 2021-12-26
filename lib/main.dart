@@ -1,19 +1,27 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:io';
-import 'cupertino_native_app.dart';
-import 'send_data_example.dart';
+import 'firebase_app.dart';
+
 
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget{
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Firebase Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: NativeApp(),
+      navigatorObservers: <NavigatorObserver>[observer],
+      home: FirebaseApp(
+        analytics: analytics,
+        observer: observer,
+      ),
     );
   }
 }
