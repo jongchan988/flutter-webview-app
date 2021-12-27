@@ -1,12 +1,14 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'memo_page.dart';
+import 'firebase_app.dart';
+
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget{
-
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context){
@@ -15,7 +17,11 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MemoPage(),
+      navigatorObservers: <NavigatorObserver>[observer],
+      home: FirebaseApp(
+        analytics: analytics,
+        observer: observer,
+      ),
     );
   }
 }
